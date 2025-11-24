@@ -3,6 +3,7 @@ package com.emr.gds.main;
 import com.emr.gds.input.IAIMain;
 import com.emr.gds.input.IAITextAreaManager;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,12 +30,25 @@ public class DexaRiskAssessmentApp extends Application {
     private ToggleGroup scoreTypeToggleGroup;
     private RadioButton tScoreRadioButton, zScoreRadioButton;
 
+    /**
+     * Opens the DEXA window from an already running JavaFX application.
+     */
+    public static void open() {
+        Platform.runLater(() -> {
+            try {
+                new DexaRiskAssessmentApp().start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Osteoporosis Risk Assessment (DEXA)");
         initComponents();
 
-        Scene scene = new Scene(createLayout(), 900, 680);
+        Scene scene = new Scene(createLayout(), 600, 680);
         scene.getStylesheets().add(""); // optional: add CSS later
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);

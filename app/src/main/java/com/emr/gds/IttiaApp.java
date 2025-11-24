@@ -236,8 +236,7 @@ public class IttiaApp extends Application {
         
         Button dexaButton = new Button("DEXA");
         dexaButton.setOnAction(e -> {
-        	// Option A – Fire-and-forget (recommended)
-        	new Thread(() -> Application.launch(DexaRiskAssessmentApp.class)).start();
+            DexaRiskAssessmentApp.open();
         });
         
         Button ekgButton = new Button("EKG");
