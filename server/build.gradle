@@ -1,0 +1,23 @@
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'java'
+}
+
+java {
+    toolchain {
+        // Use a supported target for Gradle's class scanning; adjust back to 25 when Gradle adds support.
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    // Explicit launcher needed for Gradle 9 test runner compatibility.
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -17,13 +17,16 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -32,6 +35,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -113,6 +117,83 @@ public class IttiaApp extends Application {
         this.mainStage = primaryStage;
         primaryStage.setTitle(APP_TITLE);
 
+        showLoginScene(primaryStage);
+    }
+
+    private void showLoginScene(Stage stage) {
+        Scene loginScene = buildLoginScene();
+        stage.setScene(loginScene);
+        stage.show();
+    }
+
+    private Scene buildLoginScene() {
+        BorderPane shell = new BorderPane();
+        shell.setPadding(new Insets(40, 32, 40, 32));
+        shell.setStyle("-fx-background-color: linear-gradient(to bottom right, #0f172a, #1e293b);");
+
+        VBox card = new VBox(14);
+        card.setPadding(new Insets(24));
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setMaxWidth(440);
+        card.setStyle("-fx-background-color: rgba(255,255,255,0.06); -fx-background-radius: 18; -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.35), 24, 0, 0, 12);");
+
+        Label badge = new Label("GDSEMR");
+        badge.setStyle("-fx-text-fill: #a5b4fc; -fx-font-size: 13px; -fx-font-weight: bold;");
+
+        Label title = new Label("Sign in to continue");
+        title.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label subtitle = new Label("Secure access to the EMR workspace.");
+        subtitle.setStyle("-fx-text-fill: rgba(255,255,255,0.75); -fx-font-size: 14px;");
+
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Username");
+        usernameField.setPrefWidth(360);
+        usernameField.setStyle("-fx-background-radius: 12; -fx-background-color: rgba(255,255,255,0.08); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.55);");
+
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Password");
+        passwordField.setPrefWidth(360);
+        passwordField.setStyle("-fx-background-radius: 12; -fx-background-color: rgba(255,255,255,0.08); -fx-text-fill: white; -fx-prompt-text-fill: rgba(255,255,255,0.55);");
+
+        Button loginButton = new Button("Sign In");
+        loginButton.setDefaultButton(true);
+        loginButton.setPrefWidth(160);
+        loginButton.setStyle("-fx-background-radius: 12; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: linear-gradient(to right, #4f46e5, #06b6d4);");
+
+        Label statusLabel = new Label();
+        statusLabel.setStyle("-fx-text-fill: #facc15; -fx-font-size: 12px;");
+
+        loginButton.setOnAction(e -> handleLogin(usernameField, passwordField, statusLabel));
+        passwordField.setOnAction(e -> handleLogin(usernameField, passwordField, statusLabel));
+
+        VBox buttonRow = new VBox(loginButton);
+        buttonRow.setAlignment(Pos.CENTER_LEFT);
+        buttonRow.setPadding(new Insets(8, 0, 0, 0));
+
+        card.getChildren().addAll(badge, title, subtitle, usernameField, passwordField, buttonRow, statusLabel);
+
+        StackPane center = new StackPane(card);
+        center.setAlignment(Pos.CENTER);
+        shell.setCenter(center);
+
+        return new Scene(shell, 900, 600);
+    }
+
+    private void handleLogin(TextField usernameField, PasswordField passwordField, Label statusLabel) {
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            statusLabel.setText("Enter both username and password.");
+            return;
+        }
+
+        statusLabel.setText("Signing in...");
+        launchMainScene();
+    }
+
+    private void launchMainScene() {
         try {
             // Initialize core components before building the UI
             initializeApplicationComponents();
@@ -121,8 +202,9 @@ public class IttiaApp extends Application {
             BorderPane root = buildRootLayout();
             Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
             
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            mainStage.setTitle(APP_TITLE);
+            mainStage.setScene(scene);
+            mainStage.show();
             
             // Perform setup tasks after the stage is visible
             configurePostShow(scene);
