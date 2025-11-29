@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.ekg;
 
 import com.emr.gds.main.ekg.EkgReportService;
 import com.emr.gds.main.ekg.EkgSimpleReportController;

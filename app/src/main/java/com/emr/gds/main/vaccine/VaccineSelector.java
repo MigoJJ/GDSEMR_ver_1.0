@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.vaccine;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;

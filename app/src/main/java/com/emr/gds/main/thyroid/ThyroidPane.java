@@ -551,7 +551,7 @@ public class ThyroidPane extends VBox {
         String visit = (e.getVisitType() != null)
                 ? e.getVisitType() + " visit"
                 : "Thyroid specialist evaluation";
-        lines.add("PI> Visit: " + visit);
+        lines.add("* Visit: " + visit);
 
         if (e.getCategories().isEmpty()) {
             lines.add("     | Dx: Thyroid screening/evaluation");

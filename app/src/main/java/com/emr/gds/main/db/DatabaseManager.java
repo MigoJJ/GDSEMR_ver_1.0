@@ -1,18 +1,15 @@
-package com.emr.gds.main;
+package com.emr.gds.main.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.emr.gds.main.kcd.KCDDatabaseManagerJavaFX;
+import com.emr.gds.main.kcd.KCDRecord;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A manager class for handling all database operations for KCD records.
  */
-class DatabaseManager {
+public class DatabaseManager {
     private static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(KCDDatabaseManagerJavaFX.JDBC_URL);
     }

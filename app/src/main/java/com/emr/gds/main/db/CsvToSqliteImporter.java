@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.db;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,5 +1,6 @@
 package com.emr.gds.main.thyroid;
 
+import com.emr.gds.util.StageSizing;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

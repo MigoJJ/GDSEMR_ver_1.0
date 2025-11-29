@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.vaccine;
 
 /**
  * A final class to hold constants for the vaccine module, primarily for UI elements.

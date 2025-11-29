@@ -1,6 +1,7 @@
-package com.emr.gds.main;
+package com.emr.gds.main.kcd;
 
 import com.emr.gds.input.IAIMain;
+import com.emr.gds.main.db.DatabaseManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

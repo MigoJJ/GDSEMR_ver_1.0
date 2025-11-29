@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.custom_ui;
 
 import com.emr.gds.input.IAIFxTextAreaManager;
 import com.emr.gds.input.IAIMain;

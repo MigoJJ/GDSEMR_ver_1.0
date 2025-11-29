@@ -1,14 +1,17 @@
-package com.emr.gds.main.medication;
+package com.emr.gds.util;
 
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * Utility to size stages to a comfortable, screen-aware default.
+ */
 public final class StageSizing {
 
-    private static final double DEFAULT_WIDTH_RATIO = 0.9;
+    private static final double DEFAULT_WIDTH_RATIO = 0.7;
     private static final double DEFAULT_HEIGHT_RATIO = 0.9;
-    private static final double MIN_WIDTH = 1100;
+    private static final double MIN_WIDTH = 900;
     private static final double MIN_HEIGHT = 750;
 
     private StageSizing() {

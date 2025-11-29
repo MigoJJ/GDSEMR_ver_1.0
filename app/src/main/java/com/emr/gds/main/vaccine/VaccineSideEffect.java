@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.vaccine;
 
 import com.emr.gds.input.IAIMain;
 import java.time.LocalDate;

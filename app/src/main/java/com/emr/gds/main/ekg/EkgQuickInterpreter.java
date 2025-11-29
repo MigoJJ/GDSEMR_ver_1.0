@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.ekg;
 
 import com.emr.gds.input.IAIMain;
 import com.emr.gds.input.IAITextAreaManager;

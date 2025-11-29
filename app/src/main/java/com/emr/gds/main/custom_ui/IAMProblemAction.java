@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.custom_ui;
 
 import com.emr.gds.IttiaApp;
 import java.nio.file.Files;

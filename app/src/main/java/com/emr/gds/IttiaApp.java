@@ -1,18 +1,18 @@
 package com.emr.gds;
 
-import com.emr.gds.main.ChestXrayReviewStage;	
-import com.emr.gds.main.DexaRiskAssessmentApp;
-import com.emr.gds.main.EkgSimpleReportApp;
+import com.emr.gds.main.imaging.ChestXrayReviewStage;
+import com.emr.gds.main.bone.DexaRiskAssessmentApp;
+import com.emr.gds.main.ekg.EkgSimpleReportApp;
 import com.emr.gds.input.IAIFreqFrame;
 import com.emr.gds.input.IAIFxTextAreaManager;
 import com.emr.gds.input.IAIMain;
 import com.emr.gds.input.IAITextAreaManager;
-import com.emr.gds.main.IAMButtonAction;
-import com.emr.gds.main.IAMFunctionkey;
-import com.emr.gds.main.IAMProblemAction;
-import com.emr.gds.main.IAMTextArea;
-import com.emr.gds.main.IAMTextFormatUtil;
-import com.emr.gds.main.TextAreaControlProcessor;
+import com.emr.gds.main.custom_ui.IAMButtonAction;
+import com.emr.gds.main.custom_ui.IAMFunctionkey;
+import com.emr.gds.main.custom_ui.IAMProblemAction;
+import com.emr.gds.main.custom_ui.IAMTextArea;
+import com.emr.gds.main.custom_ui.IAMTextFormatUtil;
+import com.emr.gds.main.custom_ui.TextAreaControlProcessor;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

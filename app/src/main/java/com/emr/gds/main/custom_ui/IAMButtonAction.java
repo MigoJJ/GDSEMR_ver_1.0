@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.custom_ui;
 
 import com.emr.gds.IttiaApp;
 import com.emr.gds.input.IAITextAreaManager;
@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
+import com.emr.gds.main.db.DatabaseManager;
+import com.emr.gds.main.kcd.KCDDatabaseManagerJavaFX;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -34,7 +36,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 // Import for KCDDatabaseManagerJavaFX
-import com.emr.gds.main.KCDDatabaseManagerJavaFX;
+import com.emr.gds.main.kcd.KCDDatabaseManagerJavaFX;
 
 /**
  * Manages the creation and actions for the top and bottom toolbars of the application.
@@ -269,7 +271,7 @@ public class IAMButtonAction {
         Button b = new Button(title);
         b.setOnAction(e -> {
             try {
-            com.emr.gds.main.VaccineAction.open();
+            com.emr.gds.main.vaccine.VaccineAction.open();
             } catch (Exception ex) {
                 System.err.println("Failed to launch Vaccine application: " + ex.getMessage());
             }

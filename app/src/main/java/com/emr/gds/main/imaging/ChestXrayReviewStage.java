@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.imaging;
 
 import com.emr.gds.main.service.ChestXrayService;
 import com.emr.gds.main.service.EmrBridgeService;

@@ -1,7 +1,7 @@
 package com.emr.gds.main.medication.controller;
 
 import com.emr.gds.main.medication.db.DatabaseManager;
-import com.emr.gds.main.medication.StageSizing;
+import com.emr.gds.util.StageSizing;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,6 +65,7 @@ public class LauncherController {
 
     @FXML
     private void onQuit() {
-        Platform.exit();
+        Stage stage = (Stage) categoryContainer.getScene().getWindow();
+        stage.close();
     }
 }

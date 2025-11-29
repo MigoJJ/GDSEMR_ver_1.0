@@ -1,4 +1,4 @@
-package com.emr.gds.main;
+package com.emr.gds.main.kcd;
 
 public class KCDRecord {
     private final String classification, diseaseCode, checkField, koreanName, englishName, note;
