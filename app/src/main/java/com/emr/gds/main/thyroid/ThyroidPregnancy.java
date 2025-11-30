@@ -464,7 +464,7 @@ public class ThyroidPregnancy extends BorderPane {
         String diag = convertCode(diagnosisCodeField.getText().trim(), DIAGNOSIS_CODES);
         String hospital = convertCode(transferCodeField.getText().trim(), HOSPITAL_CODES);
 
-        return String.format("# %s pregnancy  %s weeks  Due-date %s%n	%s at %s",
+        return String.format("#  [ %s ]  pregnancy  [ %s ] weeks  Due-date %s%n\t%s at %s",
                 pregNum,
                 weeks,
                 dueDate,
@@ -488,7 +488,7 @@ public class ThyroidPregnancy extends BorderPane {
     private void sendToEmrSections(String ccBlock, String aBlock, String pBlock) {
         bridgeService.insertBlock(0, ccBlock); // CC
         bridgeService.insertBlock(7, aBlock);  // Assessment
-        bridgeService.insertBlock(8, pBlock);  // Plan
+//        bridgeService.insertBlock(8, pBlock);  // Plan
     }
 
     /**

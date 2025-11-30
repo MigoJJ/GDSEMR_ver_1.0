@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -51,9 +50,11 @@ public class ThyroidPane extends VBox {
             "DTR deep tendon reflex", "DTR",
             "TED: Thyroid Eye Disease", "TED"
     );
+    private static final Map<String, String[]> CONDITION_GROUPS = buildConditionGroups();
 
     private final ThyroidEntry entry;
     private final LinkedHashMap<String, List<CheckBox>> examSectionMap = new LinkedHashMap<>();
+    private final List<CheckBox> conditionCheckBoxes = new ArrayList<>();
 
     // --- UI Controls ---
 
@@ -262,7 +263,19 @@ public class ThyroidPane extends VBox {
         grid.add(catBox, 1, row, 4, 1);
         row++;
 
-        return styledPane("1. Overview & Patient", grid);
+        Label conditionsLabel = new Label("Condition checklist:");
+        conditionsLabel.setStyle("-fx-font-weight: bold;");
+        grid.add(conditionsLabel, 0, row);
+        grid.add(buildConditionChecklist(), 1, row, 4, 1);
+        row++;
+
+        ScrollPane scrollPane = new ScrollPane(grid);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setPrefViewportHeight(320);
+
+        return styledPane("1. Overview & Patient", scrollPane);
     }
 
     private TitledPane createRiskPane() {
@@ -691,5 +704,124 @@ public class ThyroidPane extends VBox {
         pane.setGraphic(header);
         pane.setText(null);
         return pane;
+    }
+
+    private static Map<String, String[]> buildConditionGroups() {
+        Map<String, String[]> map = new LinkedHashMap<>();
+        map.put("Hypothyroidism", new String[]{
+                "Primary hypothyroidism (thyroid gland failure)",
+                " - Hashimoto's thyroiditis (chronic autoimmune thyroiditis)",
+                " - Iodine deficiency",
+                " - Post-ablative (radioiodine therapy, thyroidectomy)",
+                " - Drug-induced (lithium, amiodarone, interferon-alpha)",
+                " - Congenital hypothyroidism",
+                " - Infiltrative diseases (amyloidosis, sarcoidosis, hemochromatosis)",
+                "Secondary hypothyroidism (pituitary TSH deficiency)",
+                "Tertiary hypothyroidism (hypothalamic TRH deficiency)",
+                "Subclinical hypothyroidism"
+        });
+        map.put("Hyperthyroidism", new String[]{
+                "Graves' disease (diffuse toxic goiter)",
+                "Toxic multinodular goiter (Plummer's disease)",
+                "Toxic adenoma (solitary autonomous nodule)",
+                "Thyroiditis-associated thyrotoxicosis",
+                " - Subacute (de Quervain's) thyroiditis",
+                " - Silent (painless) thyroiditis",
+                " - Postpartum thyroiditis",
+                "Iodine-induced hyperthyroidism (Jod-Basedow phenomenon)",
+                "TSH-secreting pituitary adenoma",
+                "hCG-mediated thyrotoxicosis (gestational, trophoblastic tumors)",
+                "Factitious thyrotoxicosis (exogenous thyroid hormone)",
+                "Subclinical hyperthyroidism"
+        });
+        map.put("Thyroiditis", new String[]{
+                "Acute (suppurative) thyroiditis",
+                "Subacute (de Quervain's) thyroiditis",
+                "Chronic autoimmune (Hashimoto's) thyroiditis",
+                "Silent (painless) thyroiditis",
+                "Postpartum thyroiditis",
+                "Drug-induced thyroiditis",
+                "Riedel's thyroiditis (fibrous thyroiditis)"
+        });
+        map.put("Goiter", new String[]{
+                "Simple (nontoxic) goiter",
+                "Endemic goiter (iodine deficiency)",
+                "Sporadic goiter",
+                "Multinodular goiter (toxic and nontoxic)",
+                "Diffuse goiter (Graves' disease, thyroiditis)"
+        });
+        map.put("Thyroid Nodules", new String[]{
+                "Benign thyroid nodules",
+                " - Colloid nodules",
+                " - Follicular adenoma",
+                " - Thyroid cysts",
+                "Malignant thyroid nodules (see thyroid cancer)"
+        });
+        map.put("Thyroid Cancer", new String[]{
+                "Differentiated thyroid cancer",
+                " - Papillary thyroid carcinoma (most common)",
+                " - Follicular thyroid carcinoma",
+                " - Hurthle cell carcinoma",
+                "Medullary thyroid carcinoma (from C cells)",
+                "Anaplastic (undifferentiated) thyroid carcinoma",
+                "Primary thyroid lymphoma",
+                "Metastatic disease to thyroid"
+        });
+        map.put("Congenital / Developmental", new String[]{
+                "Congenital hypothyroidism",
+                "Thyroid dysgenesis (agenesis, ectopic thyroid)",
+                "Dyshormonogenesis (defects in thyroid hormone synthesis)",
+                "Thyroglossal duct cyst",
+                "Lingual thyroid"
+        });
+        map.put("Sick Euthyroid", new String[]{
+                "Nonthyroidal illness syndrome",
+                "Low T3 syndrome"
+        });
+        map.put("Thyroid Hormone Resistance", new String[]{
+                "Resistance to thyroid hormone (RTH)",
+                "TSH receptor mutations"
+        });
+        map.put("Pregnancy-Related", new String[]{
+                "Gestational thyrotoxicosis (hyperemesis gravidarum-related)",
+                "Postpartum thyroiditis",
+                "Transient thyrotoxicosis of pregnancy"
+        });
+        return map;
+    }
+
+    private Node buildConditionChecklist() {
+        VBox root = new VBox(8);
+        root.setPadding(new Insets(4, 0, 0, 0));
+
+        Label header = new Label("Common thyroid conditions (select multiple):");
+        header.setStyle("-fx-text-fill: #0d3d8f;");
+        root.getChildren().add(header);
+
+        int groupIndex = 0;
+        int groupCount = CONDITION_GROUPS.size();
+        for (var entry : CONDITION_GROUPS.entrySet()) {
+            Label groupLabel = new Label(entry.getKey());
+            groupLabel.setStyle("-fx-font-weight: bold;");
+            GridPane grid = new GridPane();
+            grid.setHgap(12);
+            grid.setVgap(6);
+
+            String[] items = entry.getValue();
+            for (int i = 0; i < items.length; i++) {
+                CheckBox cb = new CheckBox(items[i]);
+                conditionCheckBoxes.add(cb);
+                int col = i % 2;
+                int row = i / 2;
+                grid.add(cb, col, row);
+            }
+
+            root.getChildren().addAll(groupLabel, grid);
+            groupIndex++;
+            if (groupIndex < groupCount) {
+                root.getChildren().add(new Separator());
+            }
+        }
+        return root;
     }
 }
