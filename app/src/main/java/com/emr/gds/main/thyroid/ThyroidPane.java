@@ -194,14 +194,14 @@ public class ThyroidPane extends VBox {
         lblTiRadsResult.setStyle("-fx-font-weight: bold; -fx-text-fill: #8e44ad;");
 
         // Labs
-        txtTsh.setPromptText("TSH");
-        txtFreeT4.setPromptText("fT4");
-        txtFreeT3.setPromptText("fT3");
-        txtTpoAb.setPromptText("TPOAb");
-        txtTg.setPromptText("Tg");
-        txtTgAb.setPromptText("TgAb");
-        txtTrab.setPromptText("TRAb");
-        txtCalcitonin.setPromptText("Calcitonin");
+        txtTsh.setPromptText("TSH (uIU/mL)");
+        txtFreeT4.setPromptText("fT4 (ng/dL)");
+        txtFreeT3.setPromptText("fT3 (pg/mL)");
+        txtTpoAb.setPromptText("TPOAb (IU/mL)");
+        txtTg.setPromptText("Tg (ng/mL)");
+        txtTgAb.setPromptText("TgAb (IU/mL)");
+        txtTrab.setPromptText("TRAb (IU/L)");
+        txtCalcitonin.setPromptText("Calcitonin (pg/mL)");
         dpLastLabDate.setPromptText("Date");
 
         // Treatment
@@ -408,9 +408,17 @@ public class ThyroidPane extends VBox {
         grid.setVgap(8);
         grid.setPadding(new Insets(10));
 
-        grid.addRow(0, new Label("TSH"), txtTsh, new Label("fT4"), txtFreeT4, new Label("fT3"), txtFreeT3);
-        grid.addRow(1, new Label("TPOAb"), txtTpoAb, new Label("Tg"), txtTg, new Label("TgAb"), txtTgAb);
-        grid.addRow(2, new Label("TRAb"), txtTrab, new Label("Calcitonin"), txtCalcitonin);
+        grid.addRow(0,
+                new Label("TSH (uIU/mL)"), txtTsh,
+                new Label("fT4 (ng/dL)"), txtFreeT4,
+                new Label("fT3 (pg/mL)"), txtFreeT3);
+        grid.addRow(1,
+                new Label("TPOAb (IU/mL)"), txtTpoAb,
+                new Label("Tg (ng/mL)"), txtTg,
+                new Label("TgAb (IU/mL)"), txtTgAb);
+        grid.addRow(2,
+                new Label("TRAb (IU/L)"), txtTrab,
+                new Label("Calcitonin (pg/mL)"), txtCalcitonin);
         grid.addRow(3, new Label("Date"), dpLastLabDate);
 
         return styledPane("5. Labs", grid);
@@ -689,11 +697,14 @@ public class ThyroidPane extends VBox {
         }
 
         List<String> labs = new ArrayList<>();
-        if (e.getTsh() != null) labs.add("TSH " + e.getTsh());
-        if (e.getFreeT4() != null) labs.add("fT4 " + e.getFreeT4());
-        if (e.getFreeT3() != null) labs.add("fT3 " + e.getFreeT3());
-        if (e.getTpoAb() != null) labs.add("TPOAb " + e.getTpoAb());
-        if (e.getTrab() != null) labs.add("TRAb " + e.getTrab());
+        if (e.getTsh() != null) labs.add("TSH " + e.getTsh() + " uIU/mL");
+        if (e.getFreeT4() != null) labs.add("fT4 " + e.getFreeT4() + " ng/dL");
+        if (e.getFreeT3() != null) labs.add("fT3 " + e.getFreeT3() + " pg/mL");
+        if (e.getTpoAb() != null) labs.add("TPOAb " + e.getTpoAb() + " IU/mL");
+        if (e.getTg() != null) labs.add("Tg " + e.getTg() + " ng/mL");
+        if (e.getTgAb() != null) labs.add("TgAb " + e.getTgAb() + " IU/mL");
+        if (e.getTrab() != null) labs.add("TRAb " + e.getTrab() + " IU/L");
+        if (e.getCalcitonin() != null) labs.add("Calcitonin " + e.getCalcitonin() + " pg/mL");
         if (!labs.isEmpty()) {
             String datePart = (e.getLastLabDate() != null) ? " (" + e.getLastLabDate() + ")" : "";
             lines.add("     | Labs" + datePart + ": " + String.join("; ", labs));

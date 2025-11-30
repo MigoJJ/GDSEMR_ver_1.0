@@ -81,14 +81,18 @@ public class ThyroidPregnancy extends BorderPane {
     }
 
     private static final String[] QUICK_BUTTONS = {
-            "New Patient for Pregnancy with Thyroid disease",
-            "F/U Pregnancy with Normal Thyroid Function (TAb+)",
-            "Infertility and Thyroid Function Evaluation",
-            "F/U Pregnancy with Hyperthyroidism",
-            "F/U Pregnancy with TSH low (Hyperthyroidism/GTT)",
-            "F/U Pregnancy with Hypothyroidism",
-            "F/U Pregnancy with TSH elevation (Subclinical Hypothyroidism)",
-            "Postpartum Thyroiditis",
+    		" Overt Hypothyroidism",
+    		" Subclinical Hypothyroidism",
+    		" Isolated Maternal Hypothyroxinemia",
+    		" Hashimoto's Thyroiditis",
+    		" Graves' Disease",
+    		" Gestational Transient Thyrotoxicosis (GTT)",
+    		" Hyperemesis Gravidarum (Thyroid-associated)",
+    		" Subclinical Hyperthyroidism",
+    		" Postpartum Thyroiditis (Thyrotoxic and Hypothyroid phases)",
+    		" Goiter (Thyromegaly)",
+    		" Thyroid Nodules",
+
             "Reference Table",
             "Support Files",
             "Quit"
