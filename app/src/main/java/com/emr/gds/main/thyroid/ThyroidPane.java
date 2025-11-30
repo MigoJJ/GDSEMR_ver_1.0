@@ -54,7 +54,8 @@ public class ThyroidPane extends VBox {
 
     private final ThyroidEntry entry;
     private final LinkedHashMap<String, List<CheckBox>> examSectionMap = new LinkedHashMap<>();
-    private final List<CheckBox> conditionCheckBoxes = new ArrayList<>();
+    private final Map<String, List<CheckBox>> conditionGroupMap = new LinkedHashMap<>();
+    private final Map<ThyroidEntry.Symptom, CheckBox> symptomCheckboxes = new LinkedHashMap<>();
 
     // --- UI Controls ---
 
@@ -73,6 +74,8 @@ public class ThyroidPane extends VBox {
     private final ComboBox<ThyroidEntry.HyperEtiology> cmbHyperEtiology = new ComboBox<>();
     private final CheckBox chkHypoOvert = new CheckBox("Overt hypo");
     private final CheckBox chkHyperActive = new CheckBox("Active hyper");
+    private final MenuButton symptomDropdown = new MenuButton("Select symptoms...");
+    private final Label symptomSummary = new Label("No symptoms selected");
 
     // Risk & Calculators (New)
     private final Label lblLt4Est = new Label("Est. LT4: -");
@@ -141,6 +144,18 @@ public class ThyroidPane extends VBox {
         cmbHypoEtiology.setPromptText("Hypo etiology...");
         cmbHyperEtiology.getItems().addAll(ThyroidEntry.HyperEtiology.values());
         cmbHyperEtiology.setPromptText("Hyper etiology...");
+
+        symptomDropdown.setMaxWidth(Double.MAX_VALUE);
+        symptomSummary.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+        for (ThyroidEntry.Symptom symptom : ThyroidEntry.Symptom.values()) {
+            CheckBox cb = new CheckBox(symptom.getLabel());
+            symptomCheckboxes.put(symptom, cb);
+            CustomMenuItem item = new CustomMenuItem(cb);
+            item.setHideOnClick(false);
+            symptomDropdown.getItems().add(item);
+            cb.setOnAction(e -> updateSymptomSummary());
+        }
+        updateSymptomSummary();
 
         // Risk - ATA
         txtLymphCount.setPromptText("# Nodes");
@@ -261,6 +276,11 @@ public class ThyroidPane extends VBox {
                 new HBox(10, chkNodule, chkCancer, chkThyroiditis, chkGoiter)
         );
         grid.add(catBox, 1, row, 4, 1);
+        row++;
+
+        grid.add(new Label("Symptoms:"), 0, row);
+        VBox symptomBox = new VBox(6, symptomDropdown, symptomSummary);
+        grid.add(symptomBox, 1, row, 4, 1);
         row++;
 
         Label conditionsLabel = new Label("Condition checklist:");
@@ -466,6 +486,20 @@ public class ThyroidPane extends VBox {
         });
     }
 
+    private void updateSymptomSummary() {
+        List<String> selected = symptomCheckboxes.entrySet().stream()
+                .filter(e -> e.getValue().isSelected())
+                .map(e -> e.getKey().getLabel())
+                .toList();
+        if (selected.isEmpty()) {
+            symptomDropdown.setText("Select symptoms...");
+            symptomSummary.setText("No symptoms selected");
+        } else {
+            symptomDropdown.setText("Selected (" + selected.size() + ")");
+            symptomSummary.setText(String.join(", ", selected));
+        }
+    }
+
     private void updateDoseEst() {
         Double w = parseDoubleOrNull(txtWeight.getText());
         if (w != null) {
@@ -520,6 +554,11 @@ public class ThyroidPane extends VBox {
         if (chkThyroiditis.isSelected()) cats.add(ThyroidEntry.MainCategory.THYROIDITIS);
         if (chkGoiter.isSelected()) cats.add(ThyroidEntry.MainCategory.GOITER);
         entry.setCategories(cats);
+        List<ThyroidEntry.Symptom> selectedSymptoms = symptomCheckboxes.entrySet().stream()
+                .filter(e -> e.getValue().isSelected())
+                .map(Map.Entry::getKey)
+                .toList();
+        entry.setSymptoms(selectedSymptoms);
 
         entry.setHypoEtiology(cmbHypoEtiology.getValue());
         entry.setHypoOvert(chkHypoOvert.isSelected());
@@ -571,6 +610,18 @@ public class ThyroidPane extends VBox {
         } else {
             List<String> dx = e.getCategories().stream().map(Object::toString).toList();
             lines.add("     | Dx: " + String.join(", ", dx));
+        }
+
+        Map<String, List<String>> selectedConditions = collectSelectedConditions();
+        if (!selectedConditions.isEmpty()) {
+            lines.add("     | Conditions checklist:");
+            for (var entryGroup : selectedConditions.entrySet()) {
+                lines.add("     |   " + entryGroup.getKey() + ": " + String.join("; ", entryGroup.getValue()));
+            }
+        }
+        if (!e.getSymptoms().isEmpty()) {
+            List<String> syms = e.getSymptoms().stream().map(ThyroidEntry.Symptom::getLabel).toList();
+            lines.add("     | Symptoms: " + String.join("; ", syms));
         }
 
         List<String> statusParts = new ArrayList<>();
@@ -808,13 +859,15 @@ public class ThyroidPane extends VBox {
             grid.setVgap(6);
 
             String[] items = entry.getValue();
+            List<CheckBox> groupChecks = new ArrayList<>();
             for (int i = 0; i < items.length; i++) {
                 CheckBox cb = new CheckBox(items[i]);
-                conditionCheckBoxes.add(cb);
+                groupChecks.add(cb);
                 int col = i % 2;
                 int row = i / 2;
                 grid.add(cb, col, row);
             }
+            conditionGroupMap.put(entry.getKey(), groupChecks);
 
             root.getChildren().addAll(groupLabel, grid);
             groupIndex++;
@@ -823,5 +876,19 @@ public class ThyroidPane extends VBox {
             }
         }
         return root;
+    }
+
+    private Map<String, List<String>> collectSelectedConditions() {
+        Map<String, List<String>> selected = new LinkedHashMap<>();
+        for (var entry : conditionGroupMap.entrySet()) {
+            List<String> checked = entry.getValue().stream()
+                    .filter(CheckBox::isSelected)
+                    .map(CheckBox::getText)
+                    .toList();
+            if (!checked.isEmpty()) {
+                selected.put(entry.getKey(), checked);
+            }
+        }
+        return selected;
     }
 }

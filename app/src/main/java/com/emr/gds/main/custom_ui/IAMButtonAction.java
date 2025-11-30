@@ -3,7 +3,6 @@ package com.emr.gds.main.custom_ui;
 import com.emr.gds.IttiaApp;
 import com.emr.gds.input.IAITextAreaManager;
 import com.emr.gds.main.glp1.Glp1SemaglutideMain;
-import com.emr.gds.main.thyroid.ThyroidDisordersApp;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +23,6 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
@@ -316,49 +314,6 @@ public class IAMButtonAction {
                 System.err.println("Failed to launch KCD-9 application:");
                 ex.printStackTrace();
             }
-        });
-        return b;
-    }
-
-    private Button createThyroidButton(String title) {
-        Button b = new Button(title);
-        b.setOnAction(e -> {
-            // It's essential to run UI updates on the JavaFX Application Thread.
-            Platform.runLater(() -> {
-                try {
-                    // 1. Create a new Stage (window) for the Thyroid GDS
-                    Stage thyroidStage = new Stage();
-                    thyroidStage.setTitle("Thyroid Disorders GDS");
-
-                    // 2. Create an instance to get the UI content
-                    ThyroidDisordersApp thyroidApp = new ThyroidDisordersApp();
-                    VBox thyroidRoot = thyroidApp.createThyroidUI(); // Get the VBox containing all categories
-
-                    // 3. Wrap the UI content in a ScrollPane to handle potential overflow
-                    ScrollPane scrollPane = new ScrollPane(thyroidRoot);
-                    scrollPane.setFitToWidth(true); // Allow content to expand to the width
-                    scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Show scrollbar if needed
-
-                    // 4. Create a Scene for the new Stage
-                    Scene scene = new Scene(scrollPane, 800, 600); // Set preferred initial window size
-
-                    // 5. Set the scene to the stage and show the new window
-                    thyroidStage.setScene(scene);
-                    thyroidStage.show();
-
-                } catch (Exception ex) {
-                    System.err.println("Failed to open Thyroid application: " + ex.getMessage());
-                    ex.printStackTrace(); // Print full stack trace for debugging
-
-                    // Optionally, show an alert to the user
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Error");
-                    errorAlert.setHeaderText("Failed to open Thyroid GDS");
-                    errorAlert.setContentText("An unexpected error occurred while trying to launch the Thyroid Diagnosis System.\n" +
-                                            "Details: " + ex.getMessage());
-                    errorAlert.showAndWait();
-                }
-            });
         });
         return b;
     }
