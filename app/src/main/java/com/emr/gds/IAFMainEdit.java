@@ -1,6 +1,8 @@
 package com.emr.gds;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -103,9 +105,10 @@ public class IAFMainEdit extends JFrame {
     // === UI Initialization ===
     private void initUI() {
         setTitle("EMR Template Editor");
-        setSize(900, 620);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(245, 245, 245));
         
         initComponents();
         layoutComponents();
@@ -130,38 +133,96 @@ public class IAFMainEdit extends JFrame {
         };
         templateTable = new JTable(tableModel);
         templateTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        templateTable.setRowHeight(22);
+        templateTable.setRowHeight(28);
+        templateTable.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        templateTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+        templateTable.getTableHeader().setBackground(new Color(70, 130, 180));
+        templateTable.getTableHeader().setForeground(Color.WHITE);
+        templateTable.setSelectionBackground(new Color(184, 207, 229));
+        templateTable.setGridColor(new Color(200, 200, 200));
         templateTable.removeColumn(templateTable.getColumnModel().getColumn(0));
 
-        templateNameField = new JTextField(28);
+        templateNameField = new JTextField(35);
+        templateNameField.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        templateNameField.setPreferredSize(new Dimension(350, 30));
+        
         templateContentArea = new JTextArea();
-        templateContentArea.setFont(new Font("Malgun Gothic", Font.PLAIN, 12));
+        templateContentArea.setFont(new Font("Consolas", Font.PLAIN, 14));
         templateContentArea.setLineWrap(true);
         templateContentArea.setWrapStyleWord(true);
+        templateContentArea.setBackground(Color.WHITE);
+        templateContentArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
     
     private void layoutComponents() {
+        JScrollPane tableScrollPane = new JScrollPane(templateTable);
+        tableScrollPane.setPreferredSize(new Dimension(350, 0));
+        tableScrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                wrapInTitledPanel(new JScrollPane(templateTable), "Templates"),
+                wrapInTitledPanel(tableScrollPane, "Templates"),
                 wrapInTitledPanel(createEditorPanel(), "Editor"));
-        splitPane.setDividerLocation(300);
+        splitPane.setDividerLocation(380);
+        splitPane.setResizeWeight(0.3);
+        splitPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
         
         add(splitPane, BorderLayout.CENTER);
         add(createButtonPanel(), BorderLayout.SOUTH);
     }
 
     private JPanel createEditorPanel() {
-        JPanel panel = new JPanel(new BorderLayout(6, 6));
-        JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
-        namePanel.add(new JLabel("Name:"));
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
+        JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        namePanel.setBackground(new Color(245, 245, 245));
+        JLabel nameLabel = new JLabel("Template Name:");
+        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        namePanel.add(nameLabel);
         namePanel.add(templateNameField);
+        
+        JScrollPane contentScrollPane = new JScrollPane(templateContentArea);
+        contentScrollPane.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(new Color(150, 150, 150)), 
+            "Template Content", 
+            0, 0, 
+            new Font("SansSerif", Font.BOLD, 12), 
+            new Color(70, 70, 70)));
+        
         panel.add(namePanel, BorderLayout.NORTH);
-        panel.add(new JScrollPane(templateContentArea), BorderLayout.CENTER);
+        panel.add(contentScrollPane, BorderLayout.CENTER);
         return panel;
     }
 
     private JPanel createButtonPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 12));
+        panel.setBackground(new Color(240, 240, 240));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
+        
+        // Style buttons
+        Font buttonFont = new Font("SansSerif", Font.BOLD, 12);
+        Dimension buttonSize = new Dimension(100, 35);
+        
+        newButton.setFont(buttonFont);
+        newButton.setPreferredSize(buttonSize);
+        newButton.setBackground(new Color(70, 130, 180));
+        newButton.setForeground(Color.WHITE);
+        
+        saveButton.setFont(buttonFont);
+        saveButton.setPreferredSize(buttonSize);
+        saveButton.setBackground(new Color(60, 179, 113));
+        saveButton.setForeground(Color.WHITE);
+        
+        deleteButton.setFont(buttonFont);
+        deleteButton.setPreferredSize(buttonSize);
+        deleteButton.setBackground(new Color(220, 20, 60));
+        deleteButton.setForeground(Color.WHITE);
+        
+        useTemplateButton.setFont(buttonFont);
+        useTemplateButton.setPreferredSize(new Dimension(120, 35));
+        useTemplateButton.setBackground(new Color(255, 140, 0));
+        useTemplateButton.setForeground(Color.WHITE);
+        
         panel.add(newButton);
         panel.add(saveButton);
         panel.add(deleteButton);
@@ -172,7 +233,13 @@ public class IAFMainEdit extends JFrame {
     
     private JComponent wrapInTitledPanel(JComponent component, String title) {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(title));
+        panel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(new Color(150, 150, 150)), 
+            title, 
+            0, 0, 
+            new Font("SansSerif", Font.BOLD, 14), 
+            new Color(70, 70, 70)));
+        panel.setBackground(new Color(250, 250, 250));
         panel.add(component, BorderLayout.CENTER);
         return panel;
     }

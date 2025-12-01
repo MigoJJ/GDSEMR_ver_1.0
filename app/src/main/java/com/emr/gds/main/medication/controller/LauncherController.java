@@ -26,15 +26,17 @@ public class LauncherController {
 
         var categories = dbManager.getOrderedCategories();
         String btnStyle = """
-            -fx-background-color: #dce4ff;
-            -fx-border-color: #b0c4de;
+            -fx-background-color: linear-gradient(to bottom, #007bff, #0056b3);
+            -fx-text-fill: white;
+            -fx-border-color: #0056b3;
             -fx-border-width: 1;
-            -fx-font-size: 16px;
+            -fx-font-size: 14px;
             -fx-font-weight: bold;
-            -fx-padding: 15;
+            -fx-padding: 12 16;
             -fx-background-radius: 8;
             -fx-border-radius: 8;
             -fx-cursor: hand;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
             """;
 
         for (String cat : categories) {
@@ -57,7 +59,7 @@ public class LauncherController {
             Stage stage = (Stage) categoryContainer.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("EMR Helper – " + category);
-            StageSizing.fitToScreen(stage, 0.8, 0.9, 1100, 700);
+            StageSizing.fitToScreen(stage, 0.7, 0.8, 900, 650);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
