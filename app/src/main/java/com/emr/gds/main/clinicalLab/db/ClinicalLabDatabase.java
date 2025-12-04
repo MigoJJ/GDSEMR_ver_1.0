@@ -65,6 +65,21 @@ public class ClinicalLabDatabase {
         return items;
     }
 
+    public void updateItem(ClinicalLabItem item) {
+        String sql = "UPDATE clinical_lab_items SET codes = ?, comments = ? WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(getDbUrl());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, item.getCodes());
+            pstmt.setString(2, item.getComments());
+            pstmt.setInt(3, item.getId());
+            
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating lab item: " + e.getMessage());
+        }
+    }
+
     private ClinicalLabItem mapResultSetToItem(ResultSet rs) throws SQLException {
         return new ClinicalLabItem(
             rs.getInt("id"),
@@ -76,7 +91,9 @@ public class ClinicalLabDatabase {
             getObjectOrNull(rs, "female_range_low"),
             getObjectOrNull(rs, "female_range_high"),
             rs.getString("male_reference_range"),
-            rs.getString("female_reference_range")
+            rs.getString("female_reference_range"),
+            rs.getString("codes"),
+            rs.getString("comments")
         );
     }
 

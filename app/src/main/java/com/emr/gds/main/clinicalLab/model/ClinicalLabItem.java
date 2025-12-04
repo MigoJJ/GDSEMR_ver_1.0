@@ -11,8 +11,10 @@ public class ClinicalLabItem {
     private Double femaleRangeHigh;
     private String maleReferenceRange;
     private String femaleReferenceRange;
+    private String codes;
+    private String comments;
 
-    public ClinicalLabItem(int id, String category, String testName, String unit, Double maleRangeLow, Double maleRangeHigh, Double femaleRangeLow, Double femaleRangeHigh, String maleReferenceRange, String femaleReferenceRange) {
+    public ClinicalLabItem(int id, String category, String testName, String unit, Double maleRangeLow, Double maleRangeHigh, Double femaleRangeLow, Double femaleRangeHigh, String maleReferenceRange, String femaleReferenceRange, String codes, String comments) {
         this.id = id;
         this.category = category;
         this.testName = testName;
@@ -23,6 +25,8 @@ public class ClinicalLabItem {
         this.femaleRangeHigh = femaleRangeHigh;
         this.maleReferenceRange = maleReferenceRange;
         this.femaleReferenceRange = femaleReferenceRange;
+        this.codes = codes;
+        this.comments = comments;
     }
 
     // Getters
@@ -36,6 +40,8 @@ public class ClinicalLabItem {
     public Double getFemaleRangeHigh() { return femaleRangeHigh; }
     public String getMaleReferenceRange() { return maleReferenceRange; }
     public String getFemaleReferenceRange() { return femaleReferenceRange; }
+    public String getCodes() { return codes; }
+    public String getComments() { return comments; }
 
     // Setters
     public void setCategory(String category) { this.category = category; }
@@ -47,6 +53,8 @@ public class ClinicalLabItem {
     public void setFemaleRangeHigh(Double femaleRangeHigh) { this.femaleRangeHigh = femaleRangeHigh; }
     public void setMaleReferenceRange(String maleReferenceRange) { this.maleReferenceRange = maleReferenceRange; }
     public void setFemaleReferenceRange(String femaleReferenceRange) { this.femaleReferenceRange = femaleReferenceRange; }
+    public void setCodes(String codes) { this.codes = codes; }
+    public void setComments(String comments) { this.comments = comments; }
 
     @Override
     public String toString() {

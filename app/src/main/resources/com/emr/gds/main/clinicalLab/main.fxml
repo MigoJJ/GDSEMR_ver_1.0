@@ -43,6 +43,8 @@
                         <TableColumn fx:id="colUnit" text="Unit" prefWidth="100"/>
                         <TableColumn fx:id="colMaleRef" text="Male Ref Range" prefWidth="150"/>
                         <TableColumn fx:id="colFemaleRef" text="Female Ref Range" prefWidth="150"/>
+                        <TableColumn fx:id="colCodes" text="Codes" prefWidth="100"/>
+                        <TableColumn fx:id="colComments" text="Comments" prefWidth="150"/>
                     </columns>
                 </TableView>
             </center>
@@ -63,6 +65,12 @@
 
                 <Label text="Unit:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblUnit" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="Codes:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblCodes" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" wrapText="true"/>
+
+                <Label text="Comments:" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblComments" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" wrapText="true"/>
             </GridPane>
 
             <Separator style="-fx-padding: 10 0;"/>
@@ -81,8 +89,11 @@
                 <Label fx:id="lblFemaleRef" text="-" style="-fx-font-style: italic; -fx-text-fill: #6c757d;"/>
             </VBox>
             
+            <Button text="✏️ Edit" onAction="#handleEdit" maxWidth="1.7976931348623157E308" 
+                    style="-fx-background-color: #6f42c1; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8; -fx-margin: 20 0 0 0;"/>
+
             <Button text="➕ Add to Selection" onAction="#addToSelection" maxWidth="1.7976931348623157E308" 
-                    style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10; -fx-margin: 20 0 0 0;"/>
+                    style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10;"/>
 
         </VBox>
     </right>
