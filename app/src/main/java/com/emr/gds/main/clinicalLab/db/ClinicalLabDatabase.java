@@ -66,17 +66,68 @@ public class ClinicalLabDatabase {
     }
 
     public void updateItem(ClinicalLabItem item) {
-        String sql = "UPDATE clinical_lab_items SET codes = ?, comments = ? WHERE id = ?";
+        String sql = "UPDATE clinical_lab_items SET category = ?, test_name = ?, unit = ?, male_range_low = ?, male_range_high = ?, female_range_low = ?, female_range_high = ?, male_reference_range = ?, female_reference_range = ?, codes = ?, comments = ? WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(getDbUrl());
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, item.getCodes());
-            pstmt.setString(2, item.getComments());
-            pstmt.setInt(3, item.getId());
+            pstmt.setString(1, item.getCategory());
+            pstmt.setString(2, item.getTestName());
+            pstmt.setString(3, item.getUnit());
+            pstmt.setObject(4, item.getMaleRangeLow());
+            pstmt.setObject(5, item.getMaleRangeHigh());
+            pstmt.setObject(6, item.getFemaleRangeLow());
+            pstmt.setObject(7, item.getFemaleRangeHigh());
+            pstmt.setString(8, item.getMaleReferenceRange());
+            pstmt.setString(9, item.getFemaleReferenceRange());
+            pstmt.setString(10, item.getCodes());
+            pstmt.setString(11, item.getComments());
+            pstmt.setInt(12, item.getId());
             
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error updating lab item: " + e.getMessage());
+        }
+    }
+
+    public void insertItem(ClinicalLabItem item) {
+        String sql = "INSERT INTO clinical_lab_items (category, test_name, unit, male_range_low, male_range_high, female_range_low, female_range_high, male_reference_range, female_reference_range, codes, comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(getDbUrl());
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            
+            pstmt.setString(1, item.getCategory());
+            pstmt.setString(2, item.getTestName());
+            pstmt.setString(3, item.getUnit());
+            pstmt.setObject(4, item.getMaleRangeLow());
+            pstmt.setObject(5, item.getMaleRangeHigh());
+            pstmt.setObject(6, item.getFemaleRangeLow());
+            pstmt.setObject(7, item.getFemaleRangeHigh());
+            pstmt.setString(8, item.getMaleReferenceRange());
+            pstmt.setString(9, item.getFemaleReferenceRange());
+            pstmt.setString(10, item.getCodes());
+            pstmt.setString(11, item.getComments());
+            
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        item.setId(rs.getInt(1)); // Set the generated ID back to the item
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting lab item: " + e.getMessage());
+        }
+    }
+
+    public void deleteItem(int id) {
+        String sql = "DELETE FROM clinical_lab_items WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(getDbUrl());
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error deleting lab item: " + e.getMessage());
         }
     }
 

@@ -184,6 +184,137 @@ public class ClinicalLabController implements Initializable {
     }
 
     @FXML
+    private void handleAdd() {
+        Dialog<ClinicalLabItem> dialog = new Dialog<>();
+        dialog.setTitle("Add New Clinical Lab Item");
+        dialog.setHeaderText("Enter details for the new lab item.");
+
+        ButtonType addButtonType = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField categoryField = new TextField();
+        categoryField.setPromptText("Category");
+        TextField testNameField = new TextField();
+        testNameField.setPromptText("Test Name");
+        TextField unitField = new TextField();
+        unitField.setPromptText("Unit");
+        TextField maleRangeLowField = new TextField();
+        maleRangeLowField.setPromptText("Male Range Low");
+        TextField maleRangeHighField = new TextField();
+        maleRangeHighField.setPromptText("Male Range High");
+        TextField femaleRangeLowField = new TextField();
+        femaleRangeLowField.setPromptText("Female Range Low");
+        TextField femaleRangeHighField = new TextField();
+        femaleRangeHighField.setPromptText("Female Range High");
+        TextField maleRefRangeField = new TextField();
+        maleRefRangeField.setPromptText("Male Reference Range");
+        TextField femaleRefRangeField = new TextField();
+        femaleRefRangeField.setPromptText("Female Reference Range");
+        TextField codesField = new TextField();
+        codesField.setPromptText("Codes");
+        TextArea commentsArea = new TextArea();
+        commentsArea.setPromptText("Comments");
+        commentsArea.setPrefRowCount(3);
+
+        grid.add(new Label("Category:"), 0, 0);
+        grid.add(categoryField, 1, 0);
+        grid.add(new Label("Test Name:"), 0, 1);
+        grid.add(testNameField, 1, 1);
+        grid.add(new Label("Unit:"), 0, 2);
+        grid.add(unitField, 1, 2);
+        grid.add(new Label("Male Range Low:"), 0, 3);
+        grid.add(maleRangeLowField, 1, 3);
+        grid.add(new Label("Male Range High:"), 0, 4);
+        grid.add(maleRangeHighField, 1, 4);
+        grid.add(new Label("Female Range Low:"), 0, 5);
+        grid.add(femaleRangeLowField, 1, 5);
+        grid.add(new Label("Female Range High:"), 0, 6);
+        grid.add(femaleRangeHighField, 1, 6);
+        grid.add(new Label("Male Ref Range:"), 0, 7);
+        grid.add(maleRefRangeField, 1, 7);
+        grid.add(new Label("Female Ref Range:"), 0, 8);
+        grid.add(femaleRefRangeField, 1, 8);
+        grid.add(new Label("Codes:"), 0, 9);
+        grid.add(codesField, 1, 9);
+        grid.add(new Label("Comments:"), 0, 10);
+        grid.add(commentsArea, 1, 10);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == addButtonType) {
+                try {
+                    Double maleLow = maleRangeLowField.getText().isEmpty() ? null : Double.parseDouble(maleRangeLowField.getText());
+                    Double maleHigh = maleRangeHighField.getText().isEmpty() ? null : Double.parseDouble(maleRangeHighField.getText());
+                    Double femaleLow = femaleRangeLowField.getText().isEmpty() ? null : Double.parseDouble(femaleRangeLowField.getText());
+                    Double femaleHigh = femaleRangeHighField.getText().isEmpty() ? null : Double.parseDouble(femaleRangeHighField.getText());
+
+                    return new ClinicalLabItem(
+                        0, // ID will be set by the database
+                        categoryField.getText(),
+                        testNameField.getText(),
+                        unitField.getText(),
+                        maleLow,
+                        maleHigh,
+                        femaleLow,
+                        femaleHigh,
+                        maleRefRangeField.getText(),
+                        femaleRefRangeField.getText(),
+                        codesField.getText(),
+                        commentsArea.getText()
+                    );
+                } catch (NumberFormatException e) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Input Error");
+                    errorAlert.setHeaderText("Invalid Number Format");
+                    errorAlert.setContentText("Please ensure numeric fields contain valid numbers.");
+                    errorAlert.showAndWait();
+                    return null;
+                }
+            }
+            return null;
+        });
+
+        Optional<ClinicalLabItem> result = dialog.showAndWait();
+        result.ifPresent(newItem -> {
+            database.insertItem(newItem);
+            loadData(); // Refresh the table
+            labTable.getSelectionModel().select(newItem); // Select the newly added item
+            showDetails(newItem); // Show details of newly added item
+        });
+    }
+
+    @FXML
+    private void handleDelete() {
+        ClinicalLabItem selected = labTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Item Selected");
+            alert.setContentText("Please select an item to delete.");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Deletion");
+        confirmationAlert.setHeaderText("Delete Item: " + selected.getTestName());
+        confirmationAlert.setContentText("Are you sure you want to delete this item?");
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            database.deleteItem(selected.getId());
+            loadData(); // Refresh the table
+            clearDetails(); // Clear details panel
+        }
+    }
+
+    @FXML
     private void addToSelection() {
         ClinicalLabItem selected = labTable.getSelectionModel().getSelectedItem();
         if (selected != null) {

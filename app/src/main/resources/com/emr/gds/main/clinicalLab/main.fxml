@@ -92,6 +92,12 @@
             <Button text="✏️ Edit" onAction="#handleEdit" maxWidth="1.7976931348623157E308" 
                     style="-fx-background-color: #6f42c1; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8; -fx-margin: 20 0 0 0;"/>
 
+            <Button text="➕ Add New" onAction="#handleAdd" maxWidth="1.7976931348623157E308"
+                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8;"/>
+
+            <Button text="🗑️ Delete Selected" onAction="#handleDelete" maxWidth="1.7976931348623157E308"
+                    style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8;"/>
+
             <Button text="➕ Add to Selection" onAction="#addToSelection" maxWidth="1.7976931348623157E308" 
                     style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10;"/>
 

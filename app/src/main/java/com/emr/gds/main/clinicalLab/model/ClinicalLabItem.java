@@ -44,6 +44,7 @@ public class ClinicalLabItem {
     public String getComments() { return comments; }
 
     // Setters
+    public void setId(int id) { this.id = id; }
     public void setCategory(String category) { this.category = category; }
     public void setTestName(String testName) { this.testName = testName; }
     public void setUnit(String unit) { this.unit = unit; }
